@@ -1,0 +1,27 @@
+#######   Archivage ########
+
+webarchivage:
+   restart: always
+   build: ./Archivage/apache
+   ports:
+      - "80:80"
+   volumes:
+      - /d/www/archivage/src/Archivage:/var/www
+      - /d/www/archivage/Archivage/vhost:/etc/apache2/sites-enabled
+   environment:
+      - ALLOW_OVERRIDE=true
+   links:
+      - dbarchivage:db
+
+dbarchivage:
+   image: postgres:9.4
+   environment:
+      POSTGRES_PASSWORD: docker
+      POSTGRES_USER: docker
+
+adminer:
+   image: clue/adminer
+   ports:
+     - "2002:80"
+   links:
+     - dbarchivage:dbarchivage
