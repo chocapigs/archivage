@@ -1,4 +1,3 @@
-
 FROM silintl/ubuntu:16.04
 MAINTAINER Sébastien TRYBUS <strybus@nextoo.fr>
 
@@ -42,6 +41,16 @@ RUN a2enmod rewrite
 #    && tar zxpf /tmp/blackfire-probe.tar.gz -C /tmp \
 #    && mv /tmp/blackfire-*.so `php -r "echo ini_get('extension_dir');"`/blackfire.so \
 #    && echo "extension=blackfire.so\nblackfire.agent_socket=\${BLACKFIRE_PORT}" > /etc/php5/apache2/conf.d/blackfire.ini
+
+
+RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
+RUN apt-get install -y nodejs
+WORKDIR /data
+ENV HOME=/data
+RUN npm install -g bower grunt-cli && npm set cache /data/.npm --global
+
+RUN apt-get install ruby -y
+RUN gem install sass
 
 
 # Add image configuration and scripts
